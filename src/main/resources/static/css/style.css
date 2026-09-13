@@ -1,0 +1,319 @@
+/* ---------------------------------------------------------
+   Tokens
+--------------------------------------------------------- */
+:root{
+  --paper:   #EAE6DC;
+  --panel:   #F5F2EA;
+  --ink:     #202832;
+  --ink-soft:#565049;
+  --teal:    #35606B;
+  --rust:    #B85C2C;
+  --line:    #C9C2B2;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+*{ box-sizing: border-box; }
+
+html{ color-scheme: light; }
+
+body{
+  margin:0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 40px 20px 60px;
+}
+
+.sheet{
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* ---------------------------------------------------------
+   Masthead
+--------------------------------------------------------- */
+.masthead{
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 18px;
+  margin-bottom: 28px;
+}
+
+.masthead h1{
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: 42px;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.masthead__sub{
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+/* ---------------------------------------------------------
+   Search
+--------------------------------------------------------- */
+.search{ margin-bottom: 34px; }
+
+.search__label{
+  display:block;
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
+.search__row{
+  display:flex;
+  gap: 10px;
+}
+
+#city-input{
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  padding: 12px 14px;
+  background: var(--panel);
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  border-radius: 0;
+}
+
+#city-input:focus-visible{
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+#city-input::placeholder{ color: #9B9384; }
+
+#search-btn{
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 22px;
+  background: var(--ink);
+  color: var(--panel);
+  border: 1px solid var(--ink);
+  cursor: pointer;
+}
+
+#search-btn:hover{ background: var(--teal); border-color: var(--teal); }
+
+#search-btn:focus-visible{ outline: 2px solid var(--rust); outline-offset: 2px; }
+
+.search__error{
+  margin: 10px 0 0;
+  color: var(--rust);
+  font-size: 13px;
+}
+
+/* ---------------------------------------------------------
+   States
+--------------------------------------------------------- */
+.state-empty, .state-loading, .state-error{
+  border: 1px dashed var(--line);
+  padding: 30px 20px;
+  text-align: center;
+  color: var(--ink-soft);
+  margin-bottom: 28px;
+}
+
+.state-error{
+  border-color: var(--rust);
+  color: var(--ink);
+}
+
+.state-error #error-message{ margin: 0 0 14px; }
+
+#retry-btn{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+#retry-btn:hover{ background: var(--ink); color: var(--panel); }
+
+.dots span{
+  opacity: 0;
+  animation: blink 1.2s infinite;
+}
+.dots span:nth-child(2){ animation-delay: .2s; }
+.dots span:nth-child(3){ animation-delay: .4s; }
+
+@keyframes blink{
+  0%, 20%{ opacity: 0; }
+  50%{ opacity: 1; }
+  100%{ opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .dots span{ animation: none; opacity: 1; }
+}
+
+/* ---------------------------------------------------------
+   Reading (current conditions)
+--------------------------------------------------------- */
+.result{ margin-bottom: 10px; }
+
+.reading{
+  display:flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 22px;
+  margin-bottom: 26px;
+  flex-wrap: wrap;
+}
+
+.reading__location h2{
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 24px;
+  margin: 0;
+}
+
+.reading__location p{
+  margin: 4px 0 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.reading__current{
+  display:flex;
+  align-items: baseline;
+  gap: 18px;
+}
+
+.reading__temp{
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 1;
+  color: var(--rust);
+}
+
+.reading__stats{
+  display:flex;
+  gap: 18px;
+  margin: 0;
+  font-size: 13px;
+}
+
+.reading__stats dt{
+  color: var(--ink-soft);
+  margin: 0 0 2px;
+}
+
+.reading__stats dd{
+  margin: 0;
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------
+   Day tabs
+--------------------------------------------------------- */
+.daytabs{
+  display:flex;
+  gap: 22px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.daytabs__btn{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  padding: 8px 0 10px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.daytabs__btn.is-active{
+  color: var(--ink);
+  border-bottom-color: var(--rust);
+}
+
+.daytabs__btn:hover{ color: var(--ink); }
+.daytabs__btn:focus-visible{ outline: 2px solid var(--teal); outline-offset: 2px; }
+
+/* ---------------------------------------------------------
+   Chart
+--------------------------------------------------------- */
+.chart{ margin-bottom: 30px; }
+
+#chart-svg{
+  width: 100%;
+  height: 160px;
+  display:block;
+}
+
+.chart__caption{
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+/* ---------------------------------------------------------
+   Hourly ledger table
+--------------------------------------------------------- */
+.ledger{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.ledger thead th{
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--ink);
+  padding: 6px 8px;
+}
+
+.ledger tbody td{
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ledger tbody tr:hover{ background: var(--panel); }
+
+.ledger tbody tr.is-now td{
+  color: var(--rust);
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------
+   Colophon
+--------------------------------------------------------- */
+.colophon{
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+/* ---------------------------------------------------------
+   Small screens
+--------------------------------------------------------- */
+@media (max-width: 480px){
+  .masthead h1{ font-size: 34px; }
+  .reading__temp{ font-size: 44px; }
+  .search__row{ flex-direction: column; }
+  #search-btn{ width: 100%; }
+  .daytabs{ gap: 14px; }
+}

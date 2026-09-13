@@ -2,8 +2,10 @@ package com.weather.weatherapp.service;
 
 import com.weather.weatherapp.dto.response.GeocodeRes;
 import com.weather.weatherapp.dto.response.WeatherRes;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class WeatherService {
@@ -18,28 +20,17 @@ public class WeatherService {
     }
 
     public WeatherRes getWeatherByLat(double lat, double lon) {
-        return restClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/forecast")
-                        .queryParam("latitude", lat)
-                        .queryParam("longitude", lon)
-                        .queryParam("current", "temperature_2m,wind_speed_10m")
-                        .queryParam("hourly", "temperature_2m,relative_humidity_2m,wind_speed_10m")
-                        .queryParam("timezone", "auto")
-                        .queryParam("forecast_days", 3)
-                        .build())
-                .retrieve()
-                .body(WeatherRes.class);
+        return fetchWeather(lat, lon);
     }
 
     public WeatherRes getWeatherByCity(String city) {
-        double lat, lon;
         GeocodeRes.Result res = geocodeService.search(city);
-        lat = res.latitude();
-        lon = res.longitude();
-        return restClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/forecast")
+        return fetchWeather(res.latitude(), res.longitude());
+    }
+
+    private WeatherRes fetchWeather(double lat, double lon) {
+        WeatherRes res = restClient.get()
+                .uri(b -> b.path("/forecast")
                         .queryParam("latitude", lat)
                         .queryParam("longitude", lon)
                         .queryParam("current", "temperature_2m,wind_speed_10m")
@@ -49,5 +40,10 @@ public class WeatherService {
                         .build())
                 .retrieve()
                 .body(WeatherRes.class);
+
+        if(res == null){
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Weather service unavailable");
+        }
+        return res;
     }
 }
